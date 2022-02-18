@@ -96,14 +96,14 @@ taps = signal.remez(numtaps, edges, [0, 1, 0], type='hilbert', Hz=fs)
 delay = np.zeros(numtaps)
 delay[int(numtaps/2)] = 1.0
 
-window = signal.windows.kaiser(numtaps, beta=4)
+window = signal.windows.kaiser(numtaps, beta=8)
 taps = taps * window
 
 w, h = signal.freqz(taps, [1], worN=2000)
 plot_response(fs, w, h, "Band-pass Filter")
 
 duration = .1   # in seconds, may be float
-f = 1800.0        # sine frequency, Hz, may be float
+f = 600.0        # sine frequency, Hz, may be float
 samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs)).astype(np.float32)
 
 out_hilbert = np.convolve( taps, samples )
