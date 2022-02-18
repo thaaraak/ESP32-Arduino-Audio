@@ -65,7 +65,7 @@ trans_width = 260    # Width of transition from pass band to stop band, Hz
 numtaps = 161        # Size of the FIR filter.
 
 edges = [0, band[0] - trans_width, band[0], band[1],band[1] + trans_width, 0.5*fs]
-taps = signal.remez(numtapsnumtaps, edges, [0, 1, 0], type='hilbert', Hz=fs, maxiter=500)
+taps = signal.remez(numtaps, edges, [0, 1, 0], type='hilbert', Hz=fs, maxiter=500)
 taps = signal.remez(161, [.00005, .49995], [1], type='hilbert', maxiter=500)
 delay = np.zeros(161)
 delay[80] = 1.0
@@ -98,6 +98,9 @@ delay[int(numtaps/2)] = 1.0
 w, h = signal.freqz(taps, [1], worN=2000)
 plot_response(fs, w, h, "Band-pass Filter")
 
+
+window = signal.windows.kaiser(numtaps, beta=4)
+plot( window )
 
 duration = .1   # in seconds, may be float
 f = 2000.0        # sine frequency, Hz, may be float
