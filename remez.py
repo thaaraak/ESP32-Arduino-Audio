@@ -86,19 +86,18 @@ taps = signal.remez(numtaps, [0, cutoff, cutoff + trans_width, 0.5*fs], [1, 0], 
 w, h = signal.freqz(taps, [1], worN=2000)
 plot_response(fs, w, h, "Low-pass Filter")
 
-fs = 44100.0         # Sample rate, Hz
-band = [600, 18000]  # Desired pass band, Hz
-trans_width = 500    # Width of transition from pass band to stop band, Hz
+fs = 22050.0         # Sample rate, Hz
+band = [200, 9000]  # Desired pass band, Hz
+trans_width = 190    # Width of transition from pass band to stop band, Hz
 numtaps = 201        # Size of the FIR filter.
 edges = [0, band[0] - trans_width, band[0], band[1],
          band[1] + trans_width, 0.5*fs]
 taps = signal.remez(numtaps, edges, [0, 1, 0], type='hilbert', Hz=fs)
 delay = np.zeros(numtaps)
 delay[int(numtaps/2)] = 1.0
-
-
 w, h = signal.freqz(taps, [1], worN=2000)
 plot_response(fs, w, h, "Band-pass Filter")
+
 
 duration = .1   # in seconds, may be float
 f = 2000.0        # sine frequency, Hz, may be float
@@ -112,14 +111,16 @@ plot(out_delay)
 
 #>>> print("string - %s , float - %3.5f" % ('hello world',3.144343))
 
-with open('fir_coeffs.h','w') as file:
+filename = 'fir_coeffs_%dTaps_%d_%d_%d.h' % ( numtaps, int(fs), band[0], band[1] )
+
+with open(filename,'w') as file:
     
-    print( 'float coeffs_hilbert[] = {', file=file)
+    print( 'float coeffs_hilbert_%dTaps_%d_%d_%d[] = {' % ( numtaps, int(fs), band[0], band[1] ), file=file)
     for r in taps:
         print( '%15.10f,' % r, file=file )
     print( '};', file=file )
         
-    print( 'float coeffs_delay[] = {', file=file)
+    print( 'float coeffs_delay_%d[] = {' % numtaps, file=file)
     for r in delay:
         print( '%15.10f,' % r, file=file )
     print( '};', file=file )
