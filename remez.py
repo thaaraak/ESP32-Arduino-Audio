@@ -103,7 +103,7 @@ w, h = signal.freqz(taps, [1], worN=2000)
 plot_response(fs, w, h, "Band-pass Filter")
 
 duration = .1   # in seconds, may be float
-f = 600.0        # sine frequency, Hz, may be float
+f = 4600.0        # sine frequency, Hz, may be float
 samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs)).astype(np.float32)
 
 out_hilbert = np.convolve( taps, samples )
@@ -111,6 +111,7 @@ out_delay = np.convolve( delay, samples )
 
 plot(out_hilbert)
 plot(out_delay)
+scatter( out_hilbert[100:-100], out_delay[100:-100], s=.2, marker='.' )
 
 #>>> print("string - %s , float - %3.5f" % ('hello world',3.144343))
 
