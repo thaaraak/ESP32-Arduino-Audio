@@ -73,7 +73,7 @@ def generate_hilbert( numtaps, sample_rate, band, transition_width, window_funct
     return delay, taps
    
 def generate_hilbert_header( numtaps, sample_rate, band, delay, taps ):
-    filename = 'fir_coeffs_%dTaps_%d_%d_%d.h' % ( numtaps, int(fs), band[0], band[1] )
+    filename = 'fir_coeffs_%dTaps_%d_%d_%d.h' % ( numtaps, int(sample_rate), band[0], band[1] )
     
     with open(filename,'w') as file:
         
