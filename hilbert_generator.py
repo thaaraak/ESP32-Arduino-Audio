@@ -98,7 +98,7 @@ window = signal.windows.kaiser(numtaps, beta=8) # Window function to be used
 delay, taps = generate_hilbert( numtaps, fs, band, trans_width, window )
 generate_hilbert_header(numtaps, fs, band, delay, taps)
 
-# Plot the frequency and phase response
+# Plot the frequency response
 w, h = signal.freqz(taps, [1], worN=2000)
 plot_response(fs, w, h, "Band-pass Filter")
 
