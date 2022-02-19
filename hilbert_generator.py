@@ -69,7 +69,7 @@ def impz(b,a=1):
 def generate_hilbert( numtaps, sample_rate, band, transition_width, window_function ):
 
     edges = [0, band[0] - transition_width, band[0], band[1],
-             band[1] + transition_width, 0.5*fs]
+             band[1] + transition_width, 0.5*sample_rate]
     taps = signal.remez(numtaps, edges, [0, 1, 0], type='hilbert', Hz=sample_rate)
     delay = np.zeros(numtaps)
     delay[int(numtaps/2)] = 1.0
