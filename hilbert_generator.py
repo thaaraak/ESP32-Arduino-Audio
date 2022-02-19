@@ -99,7 +99,7 @@ def generate_hilbert_header( numtaps, sample_rate, band, delay, taps ):
 fs = 44100.0        # Sample rate, Hz
 band = [200, 9000]  # Desired pass band, Hz
 trans_width = 190   # Width of transition from pass band to stop band, Hz
-numtaps = 211       # Size of the FIR filter.
+numtaps = 361       # Size of the FIR filter.
 window = signal.windows.kaiser(numtaps, beta=8) # Window function to be used
 
 delay, taps = generate_hilbert( numtaps, fs, band, trans_width, window )
