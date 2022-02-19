@@ -58,7 +58,14 @@ def impz(b,a=1):
     title(r'Step response')
     subplots_adjust(hspace=0.5)
     
- 
+    
+# This function generates a Hilbert transform with 'numtaps' coefficients and
+# an associated delay line with the same number of taps.
+#   sample_rate         Sample Rate in Hz
+#   band                Pass band limits for the filter
+#   transition_width    width in Hz between the pass band and stop band
+#   window_function     Window function used (kaiser is used in the example)
+
 def generate_hilbert( numtaps, sample_rate, band, transition_width, window_function ):
 
     edges = [0, band[0] - transition_width, band[0], band[1],
