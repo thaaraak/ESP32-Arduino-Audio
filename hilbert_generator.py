@@ -2,7 +2,7 @@
 """
 Created on Fri Feb 18 12:27:21 2022
 
-@author: Caliphax
+@author: NA5Y
 """
 
 from pylab import *
@@ -116,7 +116,7 @@ samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs)).astype(np.float32)
 
 # Convolve the test signal with the Hilbert transform and the Delay line
 # There should be a 90 degree phase offset between the hilbert and the delay convolved
-# signals
+# output signals
 out_hilbert = np.convolve( taps, samples )
 out_delay = np.convolve( delay, samples )
 
