@@ -112,7 +112,7 @@ plot_response(fs, w, h, "Band-pass Filter")
 
 # Test the filter with a simulated signal
 duration = .1   # in seconds, may be float
-f = 1500.0      # sine frequency, Hz, may be float
+f = 500.0      # sine frequency, Hz, may be float
 samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs)).astype(np.float32)
 
 # Convolve the test signal with the Hilbert transform and the Delay line
