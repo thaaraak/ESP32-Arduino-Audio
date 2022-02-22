@@ -70,14 +70,14 @@ def generate_hilbert( numtaps, sample_rate, band, transition_width, window_funct
 
     edges = [0, band[0] - transition_width, band[0], band[1],
              band[1] + transition_width, 0.5*sample_rate]
-    taps = signal.remez(numtaps, edges, [0, 1, 0], type='hilbert', Hz=sample_rate)
-    delay = np.zeros(numtaps)
-    delay[int(numtaps/2)] = 1.0
+    t = signal.remez(numtaps, edges, [0, 1, 0], type='hilbert', Hz=sample_rate)
+    d = np.zeros(numtaps)
+    d[int(numtaps/2)] = 1.0
     
     if window_function is not None:
-        taps = taps * window
+        t = t * window_function
 
-    return delay, taps
+    return d, t
    
 def generate_hilbert_header( numtaps, sample_rate, band, delay, taps ):
     filename = 'fir_coeffs_%dTaps_%d_%d_%d.h' % ( numtaps, int(sample_rate), band[0], band[1] )
@@ -96,10 +96,11 @@ def generate_hilbert_header( numtaps, sample_rate, band, delay, taps ):
     
     file.close()
 
+
 fs = 44100.0        # Sample rate, Hz
 band = [200, 9000]  # Desired pass band, Hz
 trans_width = 190   # Width of transition from pass band to stop band, Hz
-numtaps = 511       # Size of the FIR filter.
+numtaps = 161       # Size of the FIR filter.
 window = signal.windows.kaiser(numtaps, beta=4) # Window function to be used
 
 delay, taps = generate_hilbert( numtaps, fs, band, trans_width, window )
