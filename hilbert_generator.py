@@ -100,8 +100,8 @@ def generate_hilbert_header( numtaps, sample_rate, band, delay, taps ):
 fs = 44100.0        # Sample rate, Hz
 band = [200, 9000]  # Desired pass band, Hz
 trans_width = 190   # Width of transition from pass band to stop band, Hz
-numtaps = 161       # Size of the FIR filter.
-window = signal.windows.kaiser(numtaps, beta=4) # Window function to be used
+numtaps = 101       # Size of the FIR filter.
+window = signal.windows.kaiser(numtaps, beta=8) # Window function to be used
 
 delay, taps = generate_hilbert( numtaps, fs, band, trans_width, window )
 generate_hilbert_header(numtaps, fs, band, delay, taps)
@@ -112,7 +112,7 @@ plot_response(fs, w, h, "Band-pass Filter")
 
 # Test the filter with a simulated signal
 duration = .1   # in seconds, may be float
-f = 2300.0      # sine frequency, Hz, may be float
+f = 1500.0      # sine frequency, Hz, may be float
 samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs)).astype(np.float32)
 
 # Convolve the test signal with the Hilbert transform and the Delay line
@@ -123,8 +123,12 @@ out_delay = np.convolve( delay, samples )
 
 # Plot the output. For a 90 degree phase shift the scatter plot
 # should be a perfect circle
-plot(out_hilbert)
-plot(out_delay)
+#plot(out_hilbert)
+#plot(out_delay)
+
+plot(out_hilbert[200:-200])
+plot(out_delay[200:-200])
+
 scatter( out_hilbert[200:-200], out_delay[200:-200], s=.2, marker='.' )
 
 
