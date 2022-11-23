@@ -26,9 +26,9 @@ def generate_fir_header( numtaps, pass_zero, sample_rate, cutoff, taps ):
             filter_type = "Bandpass"
         
     if len(cutoff) == 1:
-        arrname = 'coeffs_%s_%dTaps_%d_%d.h' % ( filter_type, numtaps, int(sample_rate), cutoff[0] )
+        arrname = 'coeffs_%s_%dTaps_%d_%d' % ( filter_type, numtaps, int(sample_rate), cutoff[0] )
     else:
-        arrname = 'coeffs_%s_%dTaps_%d_%d_%d.h' % ( filter_type, numtaps, int(sample_rate), cutoff[0], cutoff[1] )
+        arrname = 'coeffs_%s_%dTaps_%d_%d_%d' % ( filter_type, numtaps, int(sample_rate), cutoff[0], cutoff[1] )
         
     filename = "fir_" + arrname + ".h"
     

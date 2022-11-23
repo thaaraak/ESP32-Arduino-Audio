@@ -1,4 +1,4 @@
-float coeffs_Bandpass_201Taps_44100_100_3000.h[] = {
+float coeffs_Bandpass_201Taps_44100_100_3000[] = {
   -0.0001256267,
   -0.0001515238,
   -0.0001645890,
