@@ -38,6 +38,7 @@ void setup(void) {
   config.pin_data_rx = 17;
   config.pin_mck = 0;
   config.use_apll = true;  
+  
   out.begin(config);
 
   // Setup sine wave

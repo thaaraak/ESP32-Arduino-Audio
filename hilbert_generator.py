@@ -126,10 +126,10 @@ out_delay = np.convolve( delay, samples )
 #plot(out_hilbert)
 #plot(out_delay)
 
-plot(out_hilbert[200:-200])
-plot(out_delay[200:-200])
+#plot(out_hilbert[200:-200])
+#plot(out_delay[200:-200])
 
-scatter( out_hilbert[200:-200], out_delay[200:-200], s=5, marker='.' )
+#scatter( out_hilbert[200:-200], out_delay[200:-200], s=5, marker='.' )
 
 
 
