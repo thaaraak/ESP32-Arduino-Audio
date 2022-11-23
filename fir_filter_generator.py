@@ -6,6 +6,7 @@ Created on Wed Nov 23 12:42:15 2022
 @author: xenir
 """
 
+import numpy as np
 from numpy import cos, sin, pi, absolute, arange
 from scipy.signal import kaiserord, lfilter, firwin, freqz
 from pylab import figure, clf, plot, xlabel, ylabel, xlim, ylim, title, grid, axes, show
@@ -14,15 +15,26 @@ from pylab import figure, clf, plot, xlabel, ylabel, xlim, ylim, title, grid, ax
 def generate_fir_header( numtaps, pass_zero, sample_rate, cutoff, taps ):
     
     if pass_zero is True:
-        filter_type = "Low"
+        if len(cutoff) == 1:
+            filter_type = "Low"
+        else:
+            filter_type = "Notch"
     else:
-        filter_type = "High"
+        if len(cutoff) == 1:
+            filter_type = "High"
+        else:
+            filter_type = "Bandpass"
         
-    filename = 'fir_coeffs_%s_%dTaps_%d_%d.h' % ( filter_type, numtaps, int(sample_rate), cutoff )
+    if len(cutoff) == 1:
+        arrname = 'coeffs_%s_%dTaps_%d_%d.h' % ( filter_type, numtaps, int(sample_rate), cutoff[0] )
+    else:
+        arrname = 'coeffs_%s_%dTaps_%d_%d_%d.h' % ( filter_type, numtaps, int(sample_rate), cutoff[0], cutoff[1] )
+        
+    filename = "fir_" + arrname + ".h"
     
     with open(filename,'w') as file:
         
-        print( 'float coeffs_%s_%dTaps_%d_%d[] = {' % ( filter_type, numtaps, int(sample_rate), cutoff ), file=file)
+        print( 'float %s[] = {' % ( arrname ), file=file)
         for r in taps:
             print( '%15.10f,' % r, file=file )
         print( '};', file=file )
@@ -60,14 +72,15 @@ ripple_db = 60.0
 N, beta = kaiserord(ripple_db, width)
 
 # The cutoff frequency of the filter.
-cutoff_hz = 150.0
+cutoff_hz = np.array([100, 3000.0])
+pass_zero = True
 
 # Use firwin with a Kaiser window to create a lowpass FIR filter.
-taps = firwin(N, cutoff_hz/nyq_rate, window=('kaiser', beta), pass_zero=False)
+taps = firwin(N, cutoff_hz/nyq_rate, window=('kaiser', beta), pass_zero=pass_zero)
 
 # Use lfilter to filter x with the FIR filter.
 filtered_x = lfilter(taps, 1.0, x)
-generate_fir_header(N, False, sample_rate, cutoff_hz, taps)
+generate_fir_header(N, pass_zero, sample_rate, cutoff_hz, taps)
 #------------------------------------------------
 # Plot the FIR filter coefficients.
 #------------------------------------------------
