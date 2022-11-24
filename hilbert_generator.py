@@ -79,6 +79,16 @@ def generate_hilbert( numtaps, sample_rate, band, transition_width, window_funct
 
     return d, t
    
+def read_coeffs( filename ):
+    
+    ret=[]
+    with open(filename) as file: 
+        for line in file:
+           if (line.strip()):
+                ret.append(float(line.strip()))
+    return ret
+
+
 def generate_hilbert_header( numtaps, sample_rate, band, delay, taps ):
     filename = 'fir_coeffs_%dTaps_%d_%d_%d.h' % ( numtaps, int(sample_rate), band[0], band[1] )
     
@@ -98,9 +108,9 @@ def generate_hilbert_header( numtaps, sample_rate, band, delay, taps ):
 
 
 fs = 44100.0        # Sample rate, Hz
-band = [200, 14000]  # Desired pass band, Hz
+band = [200, 19200]  # Desired pass band, Hz
 trans_width = 190   # Width of transition from pass band to stop band, Hz
-numtaps = 161       # Size of the FIR filter.
+numtaps = 501       # Size of the FIR filter.
 window = signal.windows.kaiser(numtaps, beta=8) # Window function to be used
 
 delay, taps = generate_hilbert( numtaps, fs, band, trans_width, window )
@@ -112,18 +122,26 @@ w, h = signal.freqz(taps, [1], worN=2000)
 
 # Test the filter with a simulated signal
 duration = .1   # in seconds, may be float
-f = 1700.0      # sine frequency, Hz, may be float
+f = 500.0      # sine frequency, Hz, may be float
 samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs) + 
-           np.sin(2*np.pi*np.arange(fs*duration)*1900.0/fs)).astype(np.float32)
+           np.sin(2*np.pi*np.arange(fs*duration)*1000.0/fs)
+           ).astype(np.float32)
+
+# Plot the output. For a 90 degree phase shift the scatter plot
+# should be a perfect circle
+
+minus45 = read_coeffs( '501Tap-0.txt' );
+plus45 = read_coeffs( '501Tap-90.txt' );
 
 # Convolve the test signal with the Hilbert transform and the Delay line
 # There should be a 90 degree phase offset between the hilbert and the delay convolved
 # output signals
+out_plus45 = np.convolve( minus45, samples )
+out_minus45 = np.convolve( plus45, samples )
+
 out_hilbert = np.convolve( taps, samples )
 out_delay = np.convolve( delay, samples )
 
-# Plot the output. For a 90 degree phase shift the scatter plot
-# should be a perfect circle
 
 figure(1)
 plot(out_hilbert[200:-200])
@@ -131,6 +149,13 @@ plot(out_delay[200:-200])
 
 figure(2)
 scatter( out_hilbert[200:-200], out_delay[200:-200], s=5, marker='.' )
+
+figure(3)
+plot(out_minus45[200:-200])
+plot(out_plus45[200:-200])
+
+figure(4)
+scatter( out_minus45[200:-200], out_plus45[200:-200], s=5, marker='.' )
 
 
 
