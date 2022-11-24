@@ -122,9 +122,9 @@ w, h = signal.freqz(taps, [1], worN=2000)
 
 # Test the filter with a simulated signal
 duration = .1   # in seconds, may be float
-f = 500.0      # sine frequency, Hz, may be float
+f = 700.0      # sine frequency, Hz, may be float
 samples = (np.sin(2*np.pi*np.arange(fs*duration)*f/fs) + 
-           np.sin(2*np.pi*np.arange(fs*duration)*1000.0/fs)
+           np.sin(2*np.pi*np.arange(fs*duration)*1900.0/fs)
            ).astype(np.float32)
 
 # Plot the output. For a 90 degree phase shift the scatter plot
